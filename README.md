@@ -9,6 +9,6 @@ contains the complete platform module.
 To mess around with the UI produced by this code, simply upload the platform module and give your
 user rights to the custom objects.
 
-*Andrew Reynolds <br>
-*December 3,2015 <br>
-*GTNexus, An Infor Company
+*Andrew Reynolds* <br>
+*December 3,2015* <br>
+*GTNexus, An Infor* Company
