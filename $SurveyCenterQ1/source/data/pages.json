@@ -1,0 +1,13 @@
+{
+	"pages": {
+		"Survey": {
+			"start": true,
+		  	"title": "Survey Center",
+		  	"editable": true,
+            "template": "Survey.html",
+		  	"editMode": {
+			  "toggle" : true
+			}
+		}
+	}
+}

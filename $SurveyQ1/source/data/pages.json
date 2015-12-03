@@ -1,0 +1,13 @@
+{
+	"pages": {
+		"Survey": {
+			"start": true,
+		  	"title": "Survey",
+		  	"editable": true,
+            "template": "Survey.html",
+			primaryData: {
+				type: "$SurveyQ1"
+            }
+		}
+	}
+}

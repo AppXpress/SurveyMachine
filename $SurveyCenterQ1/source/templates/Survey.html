@@ -1,0 +1,55 @@
+<core-docbar>
+</core-docbar>
+
+<core-tabs>
+    <core-section label="Assign Survey" edit-mode="true">
+        <div class="center">
+            Select a Survey <br/>
+            <core-dropdown name="surveyDropdownAssignTab" pick-type="SurveyList" select-multiple="false"></core-dropdown>
+            <br/>
+            <h4> Your Survey : <core-text label-fn="getSurveyTitleAssign"></core-text> </h4>
+            <br/>
+            <h4>Add as many orgs as you would like, then press button below to generate new surveys</h4>
+            <h4> Select an organization </h4>
+
+            <div style="width:70%;">
+                <core-field data="party" field="myPartyField" name="myPartyLookup"></core-field>
+            </div>
+
+            <h4>Assign Survey To Following Orgs</h4>
+            <core-inline-section name="assignTabBoldLine">
+                <hr style="border: 2px solid black;"/>
+            </core-inline-section>
+            <core-list data="orgAssignList" list-class="org-list-border">
+                <div class="org-list">
+                    <span style="padding-right: 10%"><core-button label="Remove" on-click-fn="removePath"></core-button></span><b><core-text label-fn="getOrgInfo"></core-text></b>
+                </div>
+                <hr/>
+            </core-list>
+            <br/>
+            <core-button name="assignSurveyButton" label="Generate and Assign New Surveys"></core-button>
+        </div>
+    </core-section>
+
+
+    <core-section label="Survey Results">
+        <div class="center">
+            Select a Survey <br/>
+            <core-dropdown name="surveyDropdownResultTab" pick-type="SurveyList" select-multiple="false"></core-dropdown>
+            <br/>
+            <core-inline-section name="surveyLabelSection">
+                <h4> Survey Results for : <core-text label-fn="getSurveyTitleResults"></core-text> </h4>
+            </core-inline-section>
+        </div>
+        <div class="result-table">
+        <core-table data="getResults" mask-fn="table.results.mask" name="NAME">
+            <core-field field="reference" label="Link"><core-link kind="surveyLink"></core-link></core-field>
+            <core-field field="assignee.name" label="ORG"></core-field>
+            <core-field field="state" label="Survey State"></core-field>
+            <core-field field="dateAssigned" label="Assigned Date"></core-field>
+            <core-field field="dateCompleted" label="Date Completed"></core-field>
+        </core-table>
+        </div>
+    </core-section>
+
+</core-tabs>

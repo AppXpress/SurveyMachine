@@ -1,0 +1,41 @@
+.selected_party {
+   color: #444;
+   text-shadow: 1px 0px 0px #444;
+}
+
+.title{
+   margin: auto;
+   text-align: center;
+}
+
+.survey-table{
+   width: 50%;
+   margin: auto;
+   border: 5px black;
+}
+
+.survey-answers{
+   float: right;
+}
+
+.submit-btn-div{
+   width: 100%;
+   position: relative;
+}
+.submit-btn{
+   position:relative;
+   z-index: 1;
+   height: 100%;
+   min-width: 1000px;
+   max-width: 1500px;
+   margin: 0 auto;
+}
+
+.question{
+   padding-bottom: 5px;
+   display: inline;
+}
+
+.core-list-item{
+   margin-top: 10px;
+}

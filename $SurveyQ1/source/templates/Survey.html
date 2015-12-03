@@ -1,0 +1,69 @@
+
+
+<core-form cols="3">
+    <core-field field="state" label="Survey State"></core-field>
+    <core-field field="dateAssigned" label="Date Assigned"></core-field>
+    <core-field field="dateCompleted" label="Date Completed"></core-field>
+</core-form>
+
+
+<h1 class="title"> <core-field field="name"></core-field></h1>
+<br/>
+<core-section mask-fn="notInSubmitMode">
+    <h4 class="title"> Survey to be filled out by: <core-field field="assignee.name"></core-field></h4>
+</core-section>
+<core-section mask-fn="inSubmitMode">
+    <h4 class="title"> Survey Completed by: <core-field field="assignee.name"></core-field></h4>
+</core-section>
+
+
+<core-section labelKey="">
+</core-section>
+
+
+<div class="survey-table">
+    <core-list field="responseList">
+        <div class="question">
+            <core-text field="order" label-fn="orderedListFn"></core-text><core-field field="questionText"></core-field>
+        </div>
+        <br/>
+        <br/>
+        <div class="submitted-answer">
+            <span> <b style="margin: 0 5%; font-size: medium;"> <core-text mask-fn="inSubmitMode" label="A:" > </core-text></b></span>
+            <b style="color: #228B22"> <core-text mask-fn="inSubmitMode" label-fn="getSubmittedAnswerText"></core-text> </b>
+
+        </div>
+        <core-field field="responseText" label="" mask-fn="page.responseText.setMask" rows-fn="getFieldHeight" edit-mode></core-field>
+        <br/>
+        <div style="float:right; margin-top: -50px; ">
+
+        <core-field name="radioSetField" label="Answer">
+            <core-radio-set name="myRadioSet" edit-mode="true" select-multiple="false">
+                <core-radio kind="radiobtn" value="0" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn"></core-radio>
+                <core-radio kind="radiobtn" value="1" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn" ></core-radio>
+                <core-radio kind="radiobtn" value="2" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn" ></core-radio>
+                <core-radio kind="radiobtn" value="3" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn"></core-radio>
+                <core-radio kind="radiobtn" value="4" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn"></core-radio>
+                <core-radio kind="radiobtn" value="5" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn"></core-radio>
+                <core-radio kind="radiobtn" value="6" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn"></core-radio>
+                <core-radio kind="radiobtn" value="7" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn"></core-radio>
+            </core-radio-set>
+        </core-field>
+        <core-field name="checkboxSet">
+            <core-checkbox kind="answerCheckbox" item-selection-name="0" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="1" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="2" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="3" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="4" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="5" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="6" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="7" label-fn="page.checkbox.setLabel"></core-checkbox>
+        </core-field>
+        </div>
+    </core-list>
+    <br/>
+    <core-button name="submit"></core-button>
+</div>
+
+
+

@@ -1,0 +1,50 @@
+<core-docbar>
+</core-docbar>
+
+<core-section label-key="" name="topSection" id="topSection">
+    <core-form cols="2" kind="mainForm">
+        <core-field field="title"></core-field>
+        <core-field field="dateCreated"></core-field>
+
+        <core-field field="comments" label="Purpose"></core-field>
+        <core-field field="state" label="Survey State"></core-field>
+
+    </core-form>
+</core-section>
+<div>
+    <h4>INSTRUCTIONS: Add questions to your survey by filling in the below form. Questions can be either
+        yes or no, multiple choice, fill in the blank, multiple selection, or free form response. Once all the questions are added to the form,
+        press submit to view how your survey will look to the end-user. If satisfied, press complete to finalize your survey!</h4>
+</div>
+
+<core-popover name="confirmMessagePopover" kind="core.popover.message core.popover.confirm">Are you sure you want to switch question types? Your answer options
+will be deleted</core-popover>
+
+<core-section label="Survey Questions">
+</core-section>
+
+<core-popover name="questionType.onChange.pop" label="Confirm">
+    <core-text label="Are you sure you want to switch question type? It will erase your answer options!"></core-text>
+</core-popover>
+
+<core-section name="questionSection">
+    <core-table field="questionList" inline-edit="true" name="surveyQuestions" selection-name="popoverMasterDetailSelection">
+        <core-field field="questionText" label="Question"></core-field>
+
+        <core-field field="questionType" label="Question Type" select-multiple="false" on-change-fn="question.questiontype.onChange"></core-field>
+
+        <core-field name="field2" label="Answer Options">
+            <core-list field="answerOptions" label="AnswerOptions" mask-fn="isMultiselectQuestionFn">
+                <div class="answer-list">
+                    <core-field field="answerText"></core-field><core-button label="X" on-click-fn="deleteAnswerOption" mask-fn="core.mask.hiddenOutsideEditMode"></core-button>
+                </div>
+            </core-list>
+            <core-button name="addAnswerOption" label="+ Add Answer Option" mask-fn="isMultiselectQuestionButtonFn"></core-button>
+            <core-text label-fn="answerOptionLabelFn" mask-fn="isNotMultiselectQuestionFn"></core-text>
+        </core-field>
+
+    </core-table>
+    <div style="float:right;">
+        <core-button name="addAnotherQuestion" label="Add another Question" mask-fn="core.mask.hiddenOutsideEditMode"></core-button>
+    </div>
+</core-section>

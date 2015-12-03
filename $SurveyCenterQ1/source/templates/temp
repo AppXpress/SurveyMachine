@@ -1,0 +1,34 @@
+<div class="survey-table">
+    <core-list data="template" field="questionList">
+        <div>
+            <core-field field="questionText" label="Question"></core-field>
+        </div>
+        <core-field field="answerTextField" label="" mask-fn="page.fib.setMask" edit-mode></core-field>
+        <core-field field="answerTextFieldLarge" label="" mask-fn="page.open.setMask" rows="5" edit-mode></core-field>
+        <core-field name="radioSetField" label="Answer">
+            <core-radio-set name="myRadioSet" edit-mode="true" select-multiple="false">
+                <core-radio kind="radiobtn" value="0" label-fn="page.radiobtn.setLabel"></core-radio>
+                <core-radio kind="radiobtn" value="1" label-fn="page.radiobtn.setLabel"></core-radio>
+                <core-radio kind="radiobtn" value="2" label-fn="page.radiobtn.setLabel"></core-radio>
+                <core-radio kind="radiobtn" value="3" label-fn="page.radiobtn.setLabel"></core-radio>
+                <core-radio kind="radiobtn" value="4" label-fn="page.radiobtn.setLabel"></core-radio>
+                <core-radio kind="radiobtn" value="5" label-fn="page.radiobtn.setLabel"></core-radio>
+                <core-radio kind="radiobtn" value="6" label-fn="page.radiobtn.setLabel"></core-radio>
+                <core-radio kind="radiobtn" value="7" label-fn="page.radiobtn.setLabel"></core-radio>
+            </core-radio-set>
+        </core-field>
+        <core-field name="checkboxSet">
+            <core-checkbox kind="answerCheckbox" item-selection-name="0" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="1" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="2" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="3" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="4" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="5" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="6" label-fn="page.checkbox.setLabel"></core-checkbox>
+            <core-checkbox kind="answerCheckbox" item-selection-name="7" label-fn="page.checkbox.setLabel"></core-checkbox>
+        </core-field>
+    </core-list>
+</div>
+<core-form>
+    <core-button name="submit" on-click="submitSurvey"></core-button>
+</core-form>

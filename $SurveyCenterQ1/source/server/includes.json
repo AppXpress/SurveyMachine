@@ -1,0 +1,9 @@
+{
+    platformVersion: "0.9.9",
+    behaviors: [
+        "begin.js"
+    ],
+    includes: [
+        "css/app.css"
+    ]
+}

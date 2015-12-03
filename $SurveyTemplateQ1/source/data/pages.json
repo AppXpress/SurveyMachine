@@ -1,0 +1,18 @@
+{
+	"pages": {
+		"SurveyIncomplete": {
+			"start": true,
+		  	"title": "Survey-Template",
+		  	"editable": true,
+            "template": "Survey.html",
+			primaryData: {
+				type: "$SurveyTemplateQ1"
+            }
+		},
+	  	"SurveyReview": {
+		  "title": "Survey-Review",
+		  "editable": false,
+		  "template": "Survey-review.html"
+		}
+	}
+}
