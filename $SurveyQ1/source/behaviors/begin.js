@@ -14,22 +14,16 @@ Facade.Behaviors.App.onLoad(function() {
     var data = Facade.PageRegistry.getPrimaryData();
     var myQuestions = data.get('responseList');
 
-    //var questionDesign = myQuestions.getDesign();
-    //questionDesign.addField('order').setFunctionalType(Facade.Constants.FunctionalType.TEXT);
 
     var len = myQuestions && myQuestions.getLength();
     for (var i = 0; i < len; i++) {
         var question = myQuestions.get(i).getRaw();
         question.order = (i + 1) + ".";
-        //var question = myQuestions.get(i);
-        //var idx = (i + 1) + ".";
-        //question.set('order', new Facade.Prototypes.Data( idx ));
     }
 
     if (data.get('state') == 'completed') {
         inSubmitMode = true;
     }
-    //data.resetClean();
 });
 
 //Check if org viewing survey can submit the survey or not
