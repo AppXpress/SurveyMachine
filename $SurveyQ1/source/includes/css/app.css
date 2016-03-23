@@ -39,3 +39,7 @@
 .core-list-item{
    margin-top: 10px;
 }
+
+.gtui1 span.checkbox input[type=checkbox] + label {
+    position: relative !important;
+}
