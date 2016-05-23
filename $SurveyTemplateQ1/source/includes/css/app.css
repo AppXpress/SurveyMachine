@@ -44,3 +44,7 @@
 .answer-list input{
    width:80% !important;
 }
+
+.question{
+    margin-bottom: 15px;
+}

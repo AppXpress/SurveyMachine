@@ -1,5 +1,4 @@
 <core-docbar kind="SurveyReview">
-
 </core-docbar>
 
 
@@ -18,8 +17,7 @@
 <div class="survey-table">
     <core-list field="questionList">
         <div class="question">
-            <core-text field="order" label-fn="orderedListFn"></core-text><core-field field="questionText"></core-field>
-        </div>
+            <core-text label-fn="orderedListFn"></core-text><core-field field="questionText"></core-field>
         <br/>
         <br/>
         <core-field field="responseText" label="" mask-fn="page.responseText.setMask" rows-fn="getFieldHeight" edit-mode></core-field>
@@ -38,16 +36,19 @@
                     <core-radio kind="radiobtn" value="7" label-fn="page.radiobtn.setLabel" on-click-fn="radiobtnClickFn"></core-radio>
                 </core-radio-set>
             </core-field>
+        </div>
+        <div style="margin-left: 85%; ">
             <core-field name="checkboxSet">
-                <core-checkbox kind="answerCheckbox" item-selection-name="0" label-fn="page.checkbox.setLabel"></core-checkbox>
-                <core-checkbox kind="answerCheckbox" item-selection-name="1" label-fn="page.checkbox.setLabel"></core-checkbox>
-                <core-checkbox kind="answerCheckbox" item-selection-name="2" label-fn="page.checkbox.setLabel"></core-checkbox>
-                <core-checkbox kind="answerCheckbox" item-selection-name="3" label-fn="page.checkbox.setLabel"></core-checkbox>
-                <core-checkbox kind="answerCheckbox" item-selection-name="4" label-fn="page.checkbox.setLabel"></core-checkbox>
-                <core-checkbox kind="answerCheckbox" item-selection-name="5" label-fn="page.checkbox.setLabel"></core-checkbox>
-                <core-checkbox kind="answerCheckbox" item-selection-name="6" label-fn="page.checkbox.setLabel"></core-checkbox>
+                <core-checkbox kind="answerCheckbox" item-selection-name="0" label-fn="page.checkbox.setLabel"></core-checkbox><br/>
+                <core-checkbox kind="answerCheckbox" item-selection-name="1" label-fn="page.checkbox.setLabel"></core-checkbox><br/>
+                <core-checkbox kind="answerCheckbox" item-selection-name="2" label-fn="page.checkbox.setLabel"></core-checkbox><br/>
+                <core-checkbox kind="answerCheckbox" item-selection-name="3" label-fn="page.checkbox.setLabel"></core-checkbox><br/>
+                <core-checkbox kind="answerCheckbox" item-selection-name="4" label-fn="page.checkbox.setLabel"></core-checkbox><br/>
+                <core-checkbox kind="answerCheckbox" item-selection-name="5" label-fn="page.checkbox.setLabel"></core-checkbox><br/>
+                <core-checkbox kind="answerCheckbox" item-selection-name="6" label-fn="page.checkbox.setLabel"></core-checkbox><br/>
                 <core-checkbox kind="answerCheckbox" item-selection-name="7" label-fn="page.checkbox.setLabel"></core-checkbox>
             </core-field>
+        </div>
         </div>
     </core-list>
     <br/>

@@ -35,15 +35,14 @@ Facade.Behaviors.App.preLoad(function() {
     }))
     partyDesign.addField("myPartyField").setFunctionalType(Facade.Constants.FunctionalType.PARTY);
 
-    var partyData = new Facade.Prototypes.Data(undefined, {
-        type: "PartySelector"
-    });
-    Facade.DataRegistry.register("party", partyData);
+    //var partyData = new Facade.Prototypes.Data(undefined, {
+    //    type: "PartySelector"
+    //});
+
+    Facade.DataRegistry.register("party", new Facade.Prototypes.Data(undefined, { type: 'PartySelector'}));
 
     Facade.DataRegistry.register("orgAssignList", new Facade.Prototypes.DataList([], undefined));
 });
-
-Facade.Components.Docbar.buttonbar().setMask(Facade.Constants.Mask.HIDDEN);
 
 //On select of SurveyList Dropdown
 Facade.FunctionRegistry.register("#surveyDropdownAssignTab.onSelect", function(behaviorFn, args) {
@@ -77,11 +76,6 @@ Facade.FunctionRegistry.register("getSurveyTitleResults", function() {
     return selectedSurvey ? selectedSurvey.get('title') : undefined;
 });
 
-Facade.Components.Section.forName('surveyLabelSection').setMask( function(){
-    var selectedSurvey = Facade.PageRegistry.getComponent("surveyDropdownResultTab").getSelectedItem();
-    return selectedSurvey ? Facade.Constants.Mask.NORMAL : Facade.Constants.Mask.HIDDEN;
-});
-
 //Can only lookup a party if a survey is selected in dropdown
 Facade.Components.Lookup.forName('myPartyLookup').setEditMode(function() {
     var selectedSurvey = Facade.PageRegistry.getComponent("surveyDropdownAssignTab").getSelectedItem();
@@ -99,7 +93,7 @@ Facade.Components.Button.forName('assignSurveyButton').setEnabled(function() {
 Facade.FunctionRegistry.register('getOrgInfo', function() {
     return this.getPathData().get('name');
 });
-
+/*
 //Add org to assignTo list when it is selected from party lookup
 Facade.FunctionRegistry.register('#myPartyLookup.onChange', function(behaviorFn, args) {
     var selectedParty = this.getPathData();
@@ -112,6 +106,24 @@ Facade.FunctionRegistry.register('#myPartyLookup.onChange', function(behaviorFn,
     Facade.DataRegistry.get('orgAssignList').pushResult(org);
     Facade.DataRegistry.get('party').set('myPartyField', undefined);
 });
+*/
+Facade.Components.Field.forName('myPartyLookup').party().partyLookup().setOnLookup(function(behaviorFn,args){
+    var selectedParty = this.getSelectionSet().getSelection();
+    var partyId = selectedParty && selectedParty.get('memberId');
+    var partyName = selectedParty && selectedParty.get('name');
+    var org = new Facade.Prototypes.Data({
+        memberId: partyId,
+        name: partyName
+    });
+    Facade.DataRegistry.get('orgAssignList').pushResult(org);
+
+
+    //Facade.DataRegistry.get('party').set('myPartyField', undefined);
+
+    this.getButtonbar().getButton('deleteButton').$click();
+
+});
+
 
 Facade.Components.Section.forName("assignTabBoldLine").setMask( function(){
     var assignListLength = Facade.DataRegistry.get('orgAssignList').getLength();

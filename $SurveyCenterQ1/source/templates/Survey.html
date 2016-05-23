@@ -1,5 +1,3 @@
-<core-docbar>
-</core-docbar>
 
 <core-tabs>
     <core-section label="Assign Survey" edit-mode="true">
@@ -13,7 +11,9 @@
             <h4> Select an organization </h4>
 
             <div style="width:70%;">
-                <core-field data="party" field="myPartyField" name="myPartyLookup"></core-field>
+                <core-inline-section data="party">
+                    <core-field field="myPartyField" name="myPartyLookup"></core-field>
+                </core-inline-section>
             </div>
 
             <h4>Assign Survey To Following Orgs</h4>
@@ -37,7 +37,7 @@
             Select a Survey <br/>
             <core-dropdown name="surveyDropdownResultTab" pick-type="SurveyList" select-multiple="false"></core-dropdown>
             <br/>
-            <core-inline-section name="surveyLabelSection">
+            <core-inline-section mask-fn="table.results.mask">
                 <h4> Survey Results for : <core-text label-fn="getSurveyTitleResults"></core-text> </h4>
             </core-inline-section>
         </div>

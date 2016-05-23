@@ -8,44 +8,32 @@ Facade.Behaviors.App.preLoad(function(){
 
 });
 
-//Add number to each question to create an ordered question list
-//If state is in completed mode
+//Set Edit-mode and read-only mode
 Facade.Behaviors.App.onLoad(function() {
     var data = Facade.PageRegistry.getPrimaryData();
-    var myQuestions = data.get('responseList');
 
-
-    var len = myQuestions && myQuestions.getLength();
-    for (var i = 0; i < len; i++) {
-        var question = myQuestions.get(i).getRaw();
-        question.order = (i + 1) + ".";
-    }
 
     if (data.get('state') == 'completed') {
         inSubmitMode = true;
     }
-});
 
-//Check if org viewing survey can submit the survey or not
-Facade.Behaviors.App.onLoad(function() {
-    var data = Facade.PageRegistry.getPrimaryData();
     var assigneeId = data.get('assignee').get('memberId');
     var currentId = Facade.DataRegistry.get('$currentUser').get('organizationUid');
 
     read_only = (currentId != assigneeId);
-})
+});
+
 
 //Return order with a period before each question in core-text
-Facade.FunctionRegistry.register('orderedListFn', function() {
-    if (this.getPathData().getParentPathData().get('order')) {
-        return this.getPathData().getParentPathData().get('order') + ". ";
-    }
-})
+Facade.FunctionRegistry.register('orderedListFn', function(behaviorFn,args) {
+    var index = parseInt(behaviorFn.components.listItem.$internals.attrs.field) + 1 ;
+    return  index.toString() + ". ";
+});
 
 //On radio click, set the response text to the label
 Facade.FunctionRegistry.register('radiobtnClickFn', function(behaviorFn, args) {
-    var thisQuestion = this.getPathData().getRaw();
-    thisQuestion.responseText = this.getLabel();
+    var thisQuestion = this.getPathData();
+    thisQuestion.set('responseText' , this.getLabel() );
     return behaviorFn.resume();
 })
 
@@ -71,19 +59,19 @@ submitBtn.setLabel(function() {
 submitBtn.setOnClick(function() {
 
     //Validate that survey is complete
-    var unAnsweredQuestions = Facade.FunctionRegistry.execute('validateSurvey');
+    var validation = Facade.FunctionRegistry.execute('validateSurvey');
     //do not submit if all questions not answered
-    if (unAnsweredQuestions) {
-        Facade.PageRegistry.alert("Must answer all questions. \n You have not answered the following questions: \n " + unAnsweredQuestions);
-    }
-    //submit survey
-    else {
+
+    //If validation is succesful, transition the survey
+    if(validation.success){
         Facade.PageRegistry.save().then(function() {
             Facade.PageRegistry.transition("wf_submit").then(function() {
                 Facade.PageRegistry.alert("Your survey has been submitted. Thank you! ");
                 inSubmitMode = true;
             });
         })
+    } else {
+        Facade.PageRegistry.alert("Must answer all questions. \n You have not answered the following questions: \n " + validation.msg);
     }
 });
 
@@ -96,11 +84,13 @@ Facade.FunctionRegistry.register('validateSurvey', function() {
     for (var i = 0; i < len; i++) {
         var answer = responseList.get(i).get('responseText');
         if (!answer) {
-            unAnsweredQuestions += responseList.get(i).get('order') + ",";
+            var index = i + 1;
+            unAnsweredQuestions += index + ",";
         }
     }
     unAnsweredQuestions = unAnsweredQuestions.slice(0, -1);
-    return unAnsweredQuestions != "" ? unAnsweredQuestions : undefined;
+    //return unAnsweredQuestions != "" ? unAnsweredQuestions : undefined;
+    return unAnsweredQuestions == '' ? { success : true } : { success : false , msg : unAnsweredQuestions };
 });
 
 /////////////////////////////////////////////////////////////////////////////////////
@@ -121,14 +111,14 @@ Facade.Components.Radio.forKind('radiobtn').setMask(function(behaviorFn, args) {
     var field = this.getPathData();
     var opts = field.get('answerOptions');
     var questionText = field.get('questionType');
-    var index = this.getValue().getRaw();
+    var index = this.getValue().data;
     if (questionText == 'BOOL') {
         if (index < 2) {
             return Facade.Constants.Mask.NORMAL;
         }
     }
 
-    if (opts.get(index) && (!inSubmitMode)) {
+    if ( opts && opts.get(index) && (!inSubmitMode)) {
         return Facade.Constants.Mask.NORMAL;
     }
     return Facade.Constants.Mask.HIDDEN;
@@ -140,7 +130,7 @@ Facade.FunctionRegistry.register("page.radiobtn.setLabel", function(behaviorFn, 
     var field = this.getPathData();
     var label = field.get('answerOptions');
     var questionText = field.get('questionType');
-    var index = this.getValue().getRaw();
+    var index = this.getValue().data;
     if (questionText == "BOOL") {
         if (index == 0) {
             return 'yes';
@@ -240,14 +230,14 @@ Facade.FunctionRegistry.register('getSubmittedAnswerText', function(behaviorFn, 
     return answer;
 });
 
+Facade.FunctionRegistry.register('surveyStateTopText' , function(){
+    var data = Facade.PageRegistry.getPrimaryData();
+    return data.get('state') == 'completed' ? 'Survey Completed by: ' : 'Survey to be filled out by: ';
+})
+
 //Return normal if in submit mode, hidden if not
 Facade.FunctionRegistry.register('inSubmitMode', function() {
     return inSubmitMode ? Facade.Constants.Mask.NORMAL : Facade.Constants.Mask.HIDDEN;
-});
-
-//Return normal if not in submit mode, hidden if in submit mode
-Facade.FunctionRegistry.register('notInSubmitMode', function() {
-    return !inSubmitMode ? Facade.Constants.Mask.NORMAL : Facade.Constants.Mask.HIDDEN;
 });
 
 //Return 5 if open response, and 1 if fill not for height of textbox
@@ -256,13 +246,6 @@ Facade.FunctionRegistry.register('getFieldHeight', function() {
     return questionType == "OPEN" ? 5 : 1;
 });
 
-//Clean data on destruction of page
-Facade.Behaviors.Page.preDestroy(function(behaviorFn, args) {
-    if (inSubmitMode) {
-        var data = Facade.PageRegistry.getPrimaryData();
-        data.resetClean();
-    }
-});
 
 Facade.Components.Field.forName('dateCompleted').setData( function() {
     var dateCompleted = Facade.PageRegistry.getPrimaryData().get('dateCompleted');

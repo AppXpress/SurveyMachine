@@ -2,10 +2,13 @@
  * Created by areynolds on 8/12/2015.
  */
 //Clean data on departure of page -> no need to save any changes made on template
+
+/*
 Facade.Behaviors.Page.forPage("SurveyReview").onDestroy(function(behaviorFn, args) {
     var data = Facade.PageRegistry.getPrimaryData();
     data.resetClean();
 });
+*/
 
 // show radio set field if it is a boolean or multichoice question
 Facade.Components.Field.forName("radioSetField").setMask(function(behaviorFn, args) {
@@ -26,14 +29,16 @@ Facade.Components.Radio.forKind('radiobtn').setMask(function(behaviorFn, args) {
             return Facade.Constants.Mask.NORMAL;
         }
     }
-    return opts.get(index) ? Facade.Constants.Mask.NORMAL : Facade.Constants.Mask.HIDDEN;
+
+    return opts && opts.get(index) ? Facade.Constants.Mask.NORMAL : Facade.Constants.Mask.HIDDEN;
 });
 
 //Set radio button labels to answer options
 Facade.FunctionRegistry.register("page.radiobtn.setLabel", function(behaviorFn, args) {
     var label = this.getPathData().get('answerOptions');
     var questionText = this.getPathData().get('questionType');
-    var index = this.getValue().getRaw();
+    var index = this.getValue().data;
+    //If a boolean question -> return yes or no
     if (questionText == "BOOL") {
         if (index == 0) {
             return 'yes';
@@ -81,6 +86,10 @@ myBtnBar.button('finish').setOnClick(function() {
         });
     }
 });
+myBtnBar.button('finish').setMask(function(){
+    var template = Facade.PageRegistry.getPrimaryData();
+    return template.get('state') == 'complete' ? Facade.Constants.Mask.HIDDEN : Facade.Constants.Mask.NORMAL;
+});
 
 Facade.FunctionRegistry.register('validateSurvey', function() {
     var survey = Facade.PageRegistry.getPrimaryData();
@@ -123,21 +132,9 @@ Facade.FunctionRegistry.register("page.responseText.setMask", function(behaviorF
     return Facade.Constants.Mask.HIDDEN;
 });
 
-Facade.FunctionRegistry.register('orderedListFn', function() {
-    if (this.getPathData().getParentPathData().get('order')) {
-        return this.getPathData().getParentPathData().get('order') + ". ";
-    }
-})
-
-
-Facade.Behaviors.Page.forPage('SurveyReview').onLoad(function() {
-    var questions = Facade.PageRegistry.getPrimaryData().get('questionList');
-    var raw = questions && questions.getRaw();
-    var len = raw.length;
-    for (var i = 0; i < len; i++) {
-        raw[i].order = i + 1;
-    }
-
+Facade.FunctionRegistry.register('orderedListFn', function(behaviorFn,args) {
+    var index = parseInt(behaviorFn.components.listItem.$internals.attrs.field) + 1 ;
+    return  index.toString() + ". ";
 });
 
 Facade.Components.Button.forName('submit').setEnabled( false );

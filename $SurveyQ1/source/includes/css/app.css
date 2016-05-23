@@ -32,14 +32,5 @@
 }
 
 .question{
-   padding-bottom: 5px;
-   display: inline;
-}
-
-.core-list-item{
-   margin-top: 10px;
-}
-
-.gtui1 span.checkbox input[type=checkbox] + label {
-    position: relative !important;
+    margin-bottom: 15px;
 }
