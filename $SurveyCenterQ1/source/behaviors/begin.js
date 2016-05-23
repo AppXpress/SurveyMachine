@@ -35,10 +35,6 @@ Facade.Behaviors.App.preLoad(function() {
     }))
     partyDesign.addField("myPartyField").setFunctionalType(Facade.Constants.FunctionalType.PARTY);
 
-    //var partyData = new Facade.Prototypes.Data(undefined, {
-    //    type: "PartySelector"
-    //});
-
     Facade.DataRegistry.register("party", new Facade.Prototypes.Data(undefined, { type: 'PartySelector'}));
 
     Facade.DataRegistry.register("orgAssignList", new Facade.Prototypes.DataList([], undefined));
@@ -93,20 +89,7 @@ Facade.Components.Button.forName('assignSurveyButton').setEnabled(function() {
 Facade.FunctionRegistry.register('getOrgInfo', function() {
     return this.getPathData().get('name');
 });
-/*
-//Add org to assignTo list when it is selected from party lookup
-Facade.FunctionRegistry.register('#myPartyLookup.onChange', function(behaviorFn, args) {
-    var selectedParty = this.getPathData();
-    var partyId = selectedParty && selectedParty.get('memberId');
-    var partyName = selectedParty && selectedParty.get('name');
-    var org = new Facade.Prototypes.Data({
-        memberId: partyId,
-        name: partyName
-    });
-    Facade.DataRegistry.get('orgAssignList').pushResult(org);
-    Facade.DataRegistry.get('party').set('myPartyField', undefined);
-});
-*/
+
 Facade.Components.Field.forName('myPartyLookup').party().partyLookup().setOnLookup(function(behaviorFn,args){
     var selectedParty = this.getSelectionSet().getSelection();
     var partyId = selectedParty && selectedParty.get('memberId');
@@ -117,11 +100,8 @@ Facade.Components.Field.forName('myPartyLookup').party().partyLookup().setOnLook
     });
     Facade.DataRegistry.get('orgAssignList').pushResult(org);
 
-
-    //Facade.DataRegistry.get('party').set('myPartyField', undefined);
-
+    //Clear the field
     this.getButtonbar().getButton('deleteButton').$click();
-
 });
 
 
@@ -213,26 +193,30 @@ Facade.FunctionRegistry.register('orgSelected', function() {
 //Hide table if no item has been selected from survey dropdown
 Facade.FunctionRegistry.register("table.results.mask", function() {
     var dropdown = Facade.PageRegistry.getComponent("surveyDropdownResultTab");
-    return dropdown.getSelectedKey() ? Facade.Constants.Mask.NORMAL : Facade.Constants.Mask.HIDDEN;
+    return ( dropdown.getSelectedKey() && dropdown.getSelectedKey() != "-1" )
+                    ? Facade.Constants.Mask.NORMAL : Facade.Constants.Mask.HIDDEN;
 });
 
 //On selection of a survey from dropdown, retrieve all surveys that have been derived from
 //selected SurveyTemplate
-Facade.FunctionRegistry.register('#surveyDropdownResultTab.onSelect', function(behaviorFn, args) {
+
+Facade.Components.Dropdown.forName('surveyDropdownResultTab').setOnSelect(function(behaviorFn,args){
     var selectedSurvey = this.getSelectedItem();
-    Facade.DataRegistry.evict('getResults');
     if (selectedSurvey) {
         var surveyID = this.getSelectedItem().get('uid');
         var oqlStatement = "surveyID = " + surveyID + "";
         //Query for all surveys with that ID
-        return Facade.Resolver.query(SURVEY_TYPE, {
-            params: {
-                oql: oqlStatement
-            },
-            slotName: "getResults"
-        });
+        Facade.DataRegistry.register('getResults' ,
+            new Facade.Prototypes.ResolverData(undefined, {
+                type : SURVEY_TYPE ,
+                isList : true ,
+                resolver : function(resolverOptions){
+                    return Facade.Resolver.query(SURVEY_TYPE , {
+                        params : { oql : oqlStatement}
+                    })
+                }
+            }))
     }
-
 });
 
 //Set a link within the table for each survey
